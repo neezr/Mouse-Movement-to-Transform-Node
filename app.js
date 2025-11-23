@@ -28,7 +28,6 @@ boundingBox.addEventListener("ontouchstart", onMouseDown);
 function onMouseUp(){
     isInDrawingLoop = false;
     boundingBox.style.outlineColor = "#050571";
-    console.log(trackedPositions);
     // failsafe: copies trackedPositions to new array
     // for the case that user clicks back in to the bounding box too fast
     updateDavinciNode(trackedPositions.slice());
@@ -51,8 +50,6 @@ function drawParticle(x, y){
     const particle = document.createElement("div");
     particle.className = "drawingParticle";
 
-    // console.log("draw particle at", x, y)
-
     particle.style.left = x+"px";
     particle.style.top = y+"px";
 
@@ -68,8 +65,6 @@ function drawParticle(x, y){
 // get mouse position every 50ms
 setInterval(() => {
     if (isInDrawingLoop){
-        // console.log("drawing...")
-        // console.log(mousePos)
         drawParticle(mousePos.x, mousePos.y);
         trackedPositions.push({x: mousePos.x, y: mousePos.y})
     }
@@ -109,7 +104,6 @@ function updateDavinciNode(positions){
     })
     
     const dvrNodeString = makeDVRNodeString(linesPolyline, linesKeyframes);
-    console.log(dvrNodeString);
 
     compOutputTextField.value = dvrNodeString;
 }
