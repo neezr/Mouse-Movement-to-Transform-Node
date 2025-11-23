@@ -77,20 +77,6 @@ function updateScreenResolution(){
 resolutionInputWidth.addEventListener("change", updateScreenResolution);
 resolutionInputHeight.addEventListener("change", updateScreenResolution);
 
-function _prunePositions(positions){
-    // TODO remove in next commit
-    // ! do not use,  to keep timing intact !
-    const prunedPositions = [];
-    for (const p of positions){
-        if (prunedPositions.length == 0){
-            prunedPositions.push(p)
-        }
-        else if (!(p.x == prunedPositions.at(-1).x && p.y == prunedPositions.at(-1).y)){
-            prunedPositions.push(p)
-        }
-    }
-    return prunedPositions;
-}
 
 function updateDavinciNode(positions){
     const compositionLength = Math.max(compositionLengthInput.value, 1);
