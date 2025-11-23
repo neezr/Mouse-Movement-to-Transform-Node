@@ -1,7 +1,7 @@
 .boundingbox{
     width: 640px;
     height: var(--bounding-box-height, 360px);
-    color: green;
+    background-color: rgb(248, 255, 254);
 
     outline-style: dotted;
     outline-color: #050571;

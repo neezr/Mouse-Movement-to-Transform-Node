@@ -7,7 +7,7 @@ const compOutputTextField = document.getElementById("compOutputTextField");
 const buttonCopyNode = document.getElementById("buttonCopyNode");
 
 var mousePos = {x: 0, y: 0};
-const BOUNDING_BOX_WIDTH = 640;
+var screenResolution = {x: 640, y: 360}
 
 var isInDrawingLoop = false;
 var trackedPositions = [];
@@ -69,33 +69,105 @@ setInterval(() => {
 function updateScreenResolution(){
     const w = Math.max(resolutionInputWidth.value, 1);
     const h = Math.max(resolutionInputHeight.value, 1);
-    const newHeight = BOUNDING_BOX_WIDTH * (h / w);
+    const newHeight = screenResolution.x * (h / w);
     
+    screenResolution.y = newHeight;
     document.documentElement.style.setProperty("--bounding-box-height", newHeight+"px");
 }
 resolutionInputWidth.addEventListener("change", updateScreenResolution);
 resolutionInputHeight.addEventListener("change", updateScreenResolution);
 
-function prunePositions(positions){
-    // not in place
-    // TODO remove duplicates / or remove with sensitivity
-    return positions;
+function _prunePositions(positions){
+    // TODO remove in next commit
+    // ! do not use,  to keep timing intact !
+    const prunedPositions = [];
+    for (const p of positions){
+        if (prunedPositions.length == 0){
+            prunedPositions.push(p)
+        }
+        else if (!(p.x == prunedPositions.at(-1).x && p.y == prunedPositions.at(-1).y)){
+            prunedPositions.push(p)
+        }
+    }
+    return prunedPositions;
 }
 
 function updateDavinciNode(positions){
-    const dvrCompWidth = Math.max(resolutionInputWidth.value, 1);
-    const dvrCompHeight = Math.max(resolutionInputHeight.value, 1);
     const compositionLength = Math.max(compositionLengthInput.value, 1);
 
-    positions = prunePositions(positions);
+    var linesPolyline = [];
+    var linesKeyframes = [];
+    
+    positions.forEach((p, i) => {
+        // normalize points by bounding box coords (= screen resolution) + calculate deviation from (0.5, 0.5) for Polyline
+        const normalizedX = (p.x / screenResolution.x) - 0.5
+        const normalizedY = (1-(p.y / screenResolution.y)) - 0.5 // 1-y, because js reports 1-to-0 and dvr expects 0-to-1
+        linesPolyline.push(`{ Linear = true, LockY = true, X = ${normalizedX}, Y = ${normalizedY} }`)
 
-    // TODO normalize points by bounding box coords (= screen resolution = values from resolutionInputs)
-    // TODO calculate progress (0-1) for KeyFrames, calculate deviation to (0.5, 0.5) for Polyline
-    for (const p of positions){
-        p.x
-        p.y
-    }
-    console.log(dvrCompWidth, dvrCompHeight, compositionLength)
+        // calculate progress (0-1) for KeyFrames
+        const progressOfKeyframe = i / (positions.length - 1); // between 0 and 1
+        const indexOfKeyframe = Math.floor(progressOfKeyframe * compositionLength) // between 0 and compositionLength
+        linesKeyframes.push(`[${indexOfKeyframe}] = { ${progressOfKeyframe}, Flags = { LockedY = true } }`)
+    })
+    
+    const dvrNodeString = makeDVRNodeString(linesPolyline, linesKeyframes);
+    console.log(dvrNodeString);
+
+    compOutputTextField.value = dvrNodeString;
+}
+
+function makeDVRNodeString(linesPolyline, linesKeyframes){
+    // put everything together to a dvr node string
+    var dvrNodeString = [`{
+	Tools = ordered() {
+		Transform1 = Transform {
+			CtrlWZoom = false,
+			Inputs = {
+				Center = Input {
+					SourceOp = "Path1",
+					Source = "Position",
+				}
+			}
+		},
+		Path1 = PolyPath {
+			DrawMode = "InsertAndModify",
+			CtrlWZoom = false,
+			Inputs = {
+				Displacement = Input {
+					SourceOp = "Path1Displacement",
+					Source = "Value",
+				},
+				PolyLine = Input {
+					Value = Polyline {
+						Points = {
+							`];
+
+    dvrNodeString.push(linesPolyline.join(`,
+							`));
+
+    dvrNodeString.push(`
+						}
+					},
+				}
+			},
+		},
+		Path1Displacement = BezierSpline {
+			CtrlWZoom = false,
+			NameSet = true,
+			KeyFrames = {
+				`);
+
+    dvrNodeString.push(linesKeyframes.join(`,
+				`));
+
+    dvrNodeString.push(`
+			}
+		}
+	},
+	ActiveTool = "Transform1"
+}`);
+
+    return dvrNodeString.join("");
 }
 
 compositionLengthInput.addEventListener("change", ()=>{
