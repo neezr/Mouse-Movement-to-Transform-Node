@@ -98,6 +98,10 @@ function updateDavinciNode(positions){
     console.log(dvrCompWidth, dvrCompHeight, compositionLength)
 }
 
+compositionLengthInput.addEventListener("change", ()=>{
+    updateDavinciNode(trackedPositions);
+})
+
 buttonCopyNode.addEventListener("click", ()=>{
     navigator.clipboard.writeText(compOutputTextField.value);
     
@@ -107,6 +111,3 @@ buttonCopyNode.addEventListener("click", ()=>{
     }, 1000);
 })
 
-compositionLengthInput.addEventListener("change", ()=>{
-    updateDavinciNode(trackedPositions);
-})
