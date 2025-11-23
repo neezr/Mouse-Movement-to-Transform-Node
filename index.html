@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Movement to Transform Node</title>
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div id="resolutionInput" class="resolutionInput">
+        <input type="number" value=1920 id="resolutionInputWidth" min=1>
+        <input type="number" value=1080 id="resolutionInputHeight" min=1>
+    </div>
+
+    <div id="boundingbox" class="boundingbox">
+        <!-- <div class="drawingParticle"></div> -->
+    </div>
+
+    <div id="compositionViewer" class="compositionViewer">
+        <input type="number" value=300 min=1 id="compositionLengthInput">
+        <button id="buttonCopyNode">Copy Transform Node to Clipboard</button>
+        <textarea disabled id="compOutputTextField">{
+            Tools = ordered() {
+                Transform1 = Transform {
+                    CtrlWZoom = false
+                }
+            }
+        }
+        </textarea>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

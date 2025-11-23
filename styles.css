@@ -1,0 +1,27 @@
+.boundingbox{
+    width: 640px;
+    height: var(--bounding-box-height, 360px);
+    color: green;
+
+    outline-style: dotted;
+    outline-color: #050571;
+}
+
+.drawingParticle{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+
+    left:0px;
+    top:0px;
+
+    background-color: rgb(58, 3, 3);
+
+    animation: fadeOut 600ms ease-out forwards; 
+}
+
+@keyframes fadeOut{
+    0%  {opacity:1; transform: scale(1);}
+    100%  {opacity:0; transform: scale(0.2);}
+}
