@@ -13,29 +13,39 @@ var isInDrawingLoop = false;
 var trackedPositions = [];
 
 
-// TODO add touch controls
+// Mouse / Touch controls for drawing
 
-boundingBox.addEventListener("mousedown", (e) => {
+function onMouseDown(e){
     isInDrawingLoop = true;
     boundingBox.style.outlineColor = "#22b518ff";
     e.preventDefault(); // disable selecting text with the mouse held down
     trackedPositions = []; // reset previous tracked position
-})
+}
+boundingBox.addEventListener("mousedown", onMouseDown);
+boundingBox.addEventListener("ontouchstart", onMouseDown);
 
-boundingBox.addEventListener("mouseup", () => {
+
+function onMouseUp(){
     isInDrawingLoop = false;
     boundingBox.style.outlineColor = "#050571";
     console.log(trackedPositions);
     // failsafe: copies trackedPositions to new array
     // for the case that user clicks back in to the bounding box too fast
     updateDavinciNode(trackedPositions.slice());
-})
+}
+boundingBox.addEventListener("mouseup", onMouseUp);
+boundingBox.addEventListener("ontouchend", onMouseUp);
+boundingBox.addEventListener("ontouchcancel", onMouseUp);
 
-boundingBox.addEventListener("mousemove", (e)=>{
+function onMouseMove(e){
     mousePos.x = e.x;
     mousePos.y = e.y;
-})
+}
+boundingBox.addEventListener("mousemove", onMouseMove);
+boundingBox.addEventListener("ontouchmove", onMouseMove);
 
+
+// Updating positions and drawing particles during drawing
 
 function drawParticle(x, y){
     const particle = document.createElement("div");
@@ -77,6 +87,8 @@ function updateScreenResolution(){
 resolutionInputWidth.addEventListener("change", updateScreenResolution);
 resolutionInputHeight.addEventListener("change", updateScreenResolution);
 
+
+// Display output
 
 function updateDavinciNode(positions){
     const compositionLength = Math.max(compositionLengthInput.value, 1);
