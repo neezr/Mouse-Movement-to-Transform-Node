@@ -7,18 +7,29 @@
     <link href="styles.css" rel="stylesheet">
 </head>
 <body>
+    <h1>Mouse Movement to Transform Node<br>for DaVinci Resolve</h1>
+    <br><hr><br>
     <div id="resolutionInput" class="resolutionInput">
+        <p class="panelText">Screen Resolution:</p>
+        <p class="panelText small">(This does not need to match your DaVinci Resolve project, but just adjusts the canvas for drawing.)</p>
         <input type="number" value=1920 id="resolutionInputWidth" min=1>
         <input type="number" value=1080 id="resolutionInputHeight" min=1>
     </div>
+    <br><hr><br>
 
+    <p class="panelText bigger">Draw inside the box!</p>
     <div id="boundingbox" class="boundingbox">
         <!-- <div class="drawingParticle"></div> -->
     </div>
+    <p class="panelText">After drawing, copy the Fusion node from below</p>
 
+    <br><hr><br>
     <div id="compositionViewer" class="compositionViewer">
+        <p class="panelText">How long do you want the transform to be? (in number of frames):</p>
         <input type="number" value=300 min=1 id="compositionLengthInput">
+        <br>
         <button id="buttonCopyNode">Copy Transform Node to Clipboard</button>
+        <br>
         <textarea disabled id="compOutputTextField">{
             Tools = ordered() {
                 Transform1 = Transform {
@@ -28,6 +39,8 @@
         }
         </textarea>
     </div>
+    <br><hr><br>
+    <br><br>
 
     <script src="app.js"></script>
 </body>

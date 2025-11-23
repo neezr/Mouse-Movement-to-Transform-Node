@@ -25,3 +25,79 @@
     0%  {opacity:1; transform: scale(1);}
     100%  {opacity:0; transform: scale(0.2);}
 }
+
+/* General Layout */
+
+body {
+    background-color: #eeeeee;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+h1, h2{
+    font-family: "Helvetica", "Open Sans", sans-serif;
+    text-align: center;
+    color:#010110;
+}
+
+
+.panelText{
+    font-size: larger;
+    font-family:"Helvetica","Open Sans",sans-serif;
+}
+
+.small{
+    font-size: medium;
+}
+
+.bigger{
+    font-size: x-large;
+}
+
+
+input[type="number"] {
+    width: 250px;
+    padding: 12px 15px;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+input[type="number"]:hover {
+    transform: translateY(0);
+}
+
+
+textarea {
+    height: 300px;
+    width: 640px;
+}
+
+button {
+    background-color: #053b78;
+    color: white;
+    font-size: 1rem;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+}
+
+button:hover {
+    background-color: #0850a2;
+    transform: translateY(-2px);
+}
+
+button:active {
+    background-color: #0850a2;
+    transform: translateY(0);
+}
