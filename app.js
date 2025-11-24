@@ -6,7 +6,8 @@ const compositionLengthInput = document.getElementById("compositionLengthInput")
 const compOutputTextField = document.getElementById("compOutputTextField");
 const buttonCopyNode = document.getElementById("buttonCopyNode");
 
-var mousePos = {x: 0, y: 0};
+var mousePos = {x: 0, y: 0}; // based on offsetX / offsetY
+var mousePosForParticlePosition = {x: 0, y: 0}; // based on layerX / layerY
 var screenResolution = {x: 640, y: 360}
 
 var isInDrawingLoop = false;
@@ -37,8 +38,11 @@ boundingBox.addEventListener("ontouchend", onMouseUp);
 boundingBox.addEventListener("ontouchcancel", onMouseUp);
 
 function onMouseMove(e){
-    mousePos.x = e.x;
-    mousePos.y = e.y;
+    mousePos.x = e.offsetX;
+    mousePos.y = e.offsetY;
+
+    mousePosForParticlePosition.x = e.layerX;
+    mousePosForParticlePosition.y = e.layerY;
 }
 boundingBox.addEventListener("mousemove", onMouseMove);
 boundingBox.addEventListener("ontouchmove", onMouseMove);
@@ -65,7 +69,7 @@ function drawParticle(x, y){
 // get mouse position every 50ms
 setInterval(() => {
     if (isInDrawingLoop){
-        drawParticle(mousePos.x, mousePos.y);
+        drawParticle(mousePosForParticlePosition.x, mousePosForParticlePosition.y);
         trackedPositions.push({x: mousePos.x, y: mousePos.y})
     }
 }, 50)
