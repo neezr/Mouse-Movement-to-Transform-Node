@@ -179,3 +179,7 @@ buttonCopyNode.addEventListener("click", ()=>{
     }, 1000);
 })
 
+compOutputTextField.addEventListener("click", (e)=>{
+    e.preventDefault()
+    compOutputTextField.select();
+})
