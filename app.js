@@ -102,7 +102,7 @@ function updateDavinciNode(positions){
         linesPolyline.push(`{ Linear = true, LockY = true, X = ${normalizedX}, Y = ${normalizedY} }`)
 
         // calculate progress (0-1) for KeyFrames
-        const progressOfKeyframe = i / (positions.length - 1); // between 0 and 1
+        const progressOfKeyframe = positions.length == 1 ? 0 : i / (positions.length - 1); // between 0 and 1
         const indexOfKeyframe = Math.floor(progressOfKeyframe * compositionLength) // between 0 and compositionLength
         linesKeyframes.push(`[${indexOfKeyframe}] = { ${progressOfKeyframe}, Flags = { LockedY = true } }`)
     })
